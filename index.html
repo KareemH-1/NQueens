@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>NQueens</title>
+    <link rel="stylesheet" href="style.css" />
+  </head>
+  <body>
+    <h1>N-Queens Problem Solver</h1>
+    <h2>What is the N-Queens Problem?</h2>
+    <p>
+      The N-Queens problem is a classic puzzle where the goal is to place N
+      queens on an N×N chessboard so that no two queens threaten each other.
+      This means no two queens can share the same row, column, or diagonal.
+    </p>
+    <p>
+      This problem is solved using backtracking logic to explore all possible
+      configurations and find solutions where the queens do not attack each
+      other.
+    </p>
+    <hr />
+    <div class="inputDiv">
+      <input
+        type="number"
+        id="nValue"
+        placeholder="Enter the value of N"
+        min="1"
+      />
+      <button id="solveButton">Solve N-Queens</button>
+    </div>
+    <h2 id="numSolutions"></h2>
+    <div id="solutions"></div>
+    <script src="nqueens.js"></script>
+  </body>
+</html>

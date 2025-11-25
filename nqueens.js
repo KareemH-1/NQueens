@@ -137,13 +137,20 @@ function displaySolution(node, n, solutionNumber) {
     grid.appendChild(solutionDiv);
 }
 
-// MAIN
-function solveNQueens(n) {
+const sleep = (ms) =>{
+ return new Promise((r) => setTimeout(r, ms));
+}
+
+async function solveNQueens(n) {
+
     let stack = new CStack();
     let init = createInit(n);
     stack.push(init);
 
     let currentSolution = 1;
+    let iterations = 0;
+
+    await sleep(0);
 
     while (true) {
         let curr = stack.pop();
@@ -157,28 +164,54 @@ function solveNQueens(n) {
             if (isLegal(node, n)) {
                 if (node.currentRow === n) {
                     displaySolution(node, n, currentSolution);
-                    
                     currentSolution++;
+                    await sleep(0);
                 } else {
                     stack.push(node);
                 }
             }
         }
+
+        iterations++;
+        if (iterations % 500 === 0) {
+            await sleep(0);
+        }
+        document.getElementById("numSolutions").innerText = `Calculating... Solutions found: ${currentSolution - 1}`;
+
     }
+
+    document.getElementById("loading").style.display = "none";   
     document.getElementById("numSolutions").innerText = `Total Solutions: ${currentSolution - 1}`;
 }
 
-
+let previousNum = null;
 document.getElementById("solveButton").addEventListener("click", () => {
     const n = parseInt(document.getElementById("nValue").value);
+    if(isNaN(n) || n <= 0){
+        alert("Please enter a valid positive integer for N.");
+        return;
+    }
+    if(n === previousNum){
+        alert("Please enter a different value of N than the previous one.");
+        return;
+    }
     if(n < 4){
         alert("Please enter a value of N greater than or equal to 4.");
         return;
     }
+    if (n >= 10) {
+        const proceed = confirm(
+            "Warning: Large N values may take considerable time to compute. Do you want to proceed? (Yes = proceed, No = cancel)"
+        );
+        if (!proceed) {
+            return;
+        }
+    }
     document.getElementById("solutions").innerHTML = "";
-    document.getElementById("numSolutions").innerText = "";
-    solveNQueens(n);
-    
+    document.getElementById("numSolutions").innerText = "Calculating...";
+    previousNum = n;
+    document.getElementById("loading").style.display = "flex";
+    solveNQueens(n); 
 });
 
 document.addEventListener("keypress", (event) => {
